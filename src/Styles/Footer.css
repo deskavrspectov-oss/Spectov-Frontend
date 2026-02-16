@@ -1,0 +1,87 @@
+.footer-container {
+  padding: 20px;
+  text-align: center;
+  margin-top: 20px; /* Add margin above the whole section */
+}
+
+.footer-container h1 {
+  margin-bottom: 10px; /* Reduced margin below heading */
+}
+
+.type {
+  margin-bottom: 10px;
+  height: fit-content;
+  padding-bottom: 0;
+}
+
+.footer-socialmedia {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px; /* Reduced gap between social media icons */
+}
+
+.footer-socialmedia-link a
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.footer-socialmedia-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.footer-socialmedia-link p
+{
+  padding: 0;
+}
+
+.footer-socialmedia-link img {
+  max-width: 40px; /* Reduced icon size */
+  max-height: 40px; /* Reduced icon size */
+  /* margin-left: 10px; */
+}
+
+.footer-socialmedia-link p {
+  margin:  0; /* Added slight margin to keep text and icons close */
+}
+
+@media (max-width: 400px) {
+  .footer-socialmedia {
+    gap: 10px; /* Adjusted gap for small screens */
+  }
+
+  .footer-socialmedia-link img {
+    max-width: 30px; /* Reduced icon size for very small screens */
+    max-height: 30px; /* Reduced icon size for very small screens */
+  }
+
+  .footer-socialmedia-link p {
+    font-size: 10px; /* Reduced font size for very small screens */
+  }
+}
+
+.footerbox {
+  padding: 10px;
+}
+
+.footer-logo img {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .footerbox {
+    text-align: center;
+  }
+}
+
+.page-footer {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f8f9fa;
+}
