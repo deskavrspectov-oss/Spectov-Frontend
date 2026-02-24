@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "../Styles/Login.css"; 
+import "./Login.css";
 
 const LoginForm = () => {
   const [data, setData] = useState({ email: "", password: "" });
@@ -20,7 +20,6 @@ const LoginForm = () => {
       localStorage.setItem("email", data.email);
 
       window.location = "/page";
-    //  alert(res.data)
     } catch (error) {
       if (
         error.response &&
@@ -33,53 +32,60 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-form-container">
-        <div className="login-form-left">
-          <form onSubmit={handleSubmit} className="login-form">
-            <h1 className="login-title">Login to Your Account</h1>
-            <input
-              type="email"
-              placeholder="Email"
-              name="email"
-              onChange={handleChange}
-              value={data.email}
-              required
-              className="login-input"
-              style={{backgroundColor:"white"}}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              name="password"
-              onChange={handleChange}
-              value={data.password}
-              required
-              className="login-input"
-              style={{backgroundColor:"white"}}
-            />
-            {error && <div className="login-error">{error}</div>}
-            <button type="submit" className="login-button">Sign In</button>
-          </form>
-        </div>
-        <div className="login-form-right">
-          <h1 className="login-new-title">New Here ?</h1>
+    <div className="arvr-login">
+      {/* LEFT PANEL – Navigation (original content preserved) */}
+      <div className="arvr-login__left">
+        <div className="arvr-left-content">
+          <h1 className="arvr-welcome-heading">Welcome Back</h1>
+
+          <h2 className="arvr-secondary-heading">New Here ?</h2>
           <Link to="/signup">
-            <button type="button" className="login-signup-button">Sign Up</button>
+            <button className="arvr-nav-button">Sign Up</button>
           </Link>
-          <h1 className="login-new-title">Login as Admin ?</h1>
-          {/* <Link to="/admin-login">
-            <button type="button" className="login-signup-button">Admin Login</button>
-          </Link> */}
+
+          <h2 className="arvr-secondary-heading">Login as Admin ?</h2>
           <a href="https://super-admin-tau.vercel.app/">
-             <button type="button" className="login-signup-button">Admin Login</button>
+            <button className="arvr-nav-button">Admin Login</button>
           </a>
 
-          <h1 className="login-new-title">Forget Password ?</h1>
+          <h2 className="arvr-secondary-heading">Forget Password ?</h2>
           <Link to="/forget-password">
-            <button type="button" className="login-signup-button">Reset Password</button>
+            <button className="arvr-nav-button">Reset Password</button>
           </Link>
         </div>
+        <div className="arvr-left-overlay"></div>
+      </div>
+
+      {/* RIGHT PANEL – Login Form */}
+      <div className="arvr-login__right">
+        <form onSubmit={handleSubmit} className="arvr-form">
+          <h2 className="arvr-form-title">Login to Your Account</h2>
+
+          <input
+            type="email"
+            placeholder="Email"
+            name="email"
+            onChange={handleChange}
+            value={data.email}
+            required
+            className="arvr-input"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            name="password"
+            onChange={handleChange}
+            value={data.password}
+            required
+            className="arvr-input"
+          />
+
+          {error && <div className="arvr-error">{error}</div>}
+
+          <button type="submit" className="arvr-button arvr-button--primary">
+            Sign In
+          </button>
+        </form>
       </div>
     </div>
   );

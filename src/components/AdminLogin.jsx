@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../Styles/Login.css"; 
+import "./Login.css"; // Reuse the same CSS file
 
 const AdminLogin = () => {
   const email = import.meta.env.VITE_REACT_APP_EMAIL;
@@ -15,7 +15,7 @@ const AdminLogin = () => {
     if (Iemail === "" || Ipass === "") {
       setError("Enter Email and Password to login");
     } else if (email === Iemail && pass === Ipass) {
-      localStorage.setItem("AdminEmail",email);
+      localStorage.setItem("AdminEmail", email);
       navigate("/admin/all-request");
       window.location.reload();
     } else {
@@ -24,57 +24,61 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-form-container">
-        <div className="login-form-left">
-          <div className="login-form">
-            <h1 className="login-title">Login as Admin</h1>
-            <input
-              type="email"
-              placeholder="Admin email"
-              name="email"
-              required
-              className="login-input"
-              style={{ backgroundColor: "white" }}
-              id="email"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              name="password"
-              required
-              id="pass"
-              className="login-input"
-              style={{ backgroundColor: "white" }}
-            />
-            <div className="login-error">{error}</div>            <button
-              type="button"
-              className="login-button"
-              onClick={handleLogin}
-            >
-              Sign In as Admin
-            </button>
-          </div>
-        </div>
-        <div className="login-form-right">
-          <h1 className="login-new-title">New Here ?</h1>
+    <div className="arvr-login"> {/* Reusing the same container class */}
+      {/* LEFT PANEL – Navigation (original links preserved) */}
+      <div className="arvr-login__left">
+        <div className="arvr-left-content">
+          <h1 className="arvr-welcome-heading">Admin Portal</h1>
+
+          <h2 className="arvr-secondary-heading">New Here ?</h2>
           <Link to="/signup">
-            <button type="button" className="login-signup-button">
-              Sign Up
-            </button>
+            <button className="arvr-nav-button">Sign Up</button>
           </Link>
-          <h1 className="login-new-title">Already Registered?</h1>
+
+          <h2 className="arvr-secondary-heading">Already Registered?</h2>
           <Link to="/login">
-            <button type="button" className="login-signup-button">
-              Sign In
-            </button>
+            <button className="arvr-nav-button">Sign In</button>
           </Link>
-          <h1 className="login-new-title">Forget Password ?</h1>
+
+          <h2 className="arvr-secondary-heading">Forget Password ?</h2>
           <Link to="/forget-password">
-            <button type="button" className="login-signup-button">
-              Reset Password
-            </button>
+            <button className="arvr-nav-button">Reset Password</button>
           </Link>
+        </div>
+        <div className="arvr-left-overlay"></div>
+      </div>
+
+      {/* RIGHT PANEL – Admin Login Form */}
+      <div className="arvr-login__right">
+        <div className="arvr-form"> {/* Reusing form styling */}
+          <h2 className="arvr-form-title">Login as Admin</h2>
+
+          <input
+            type="email"
+            placeholder="Admin email"
+            name="email"
+            required
+            className="arvr-input"
+            id="email"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            name="password"
+            required
+            id="pass"
+            className="arvr-input"
+          />
+
+          {error && <div className="arvr-error">{error}</div>}
+
+          <button
+            type="button"
+            className="arvr-button arvr-button--primary"
+            onClick={handleLogin}
+          >
+            Sign In as Admin
+          </button>
         </div>
       </div>
     </div>
