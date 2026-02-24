@@ -1,24 +1,24 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import "../Styles/Login.css"; 
+import "../Styles/Login.css"; // Reuse the same CSS file
 
 const ForgetPassword = () => {
   const [inputemail, setInputemail] = useState({ email: '' });
   const [inputpass, setInputpass] = useState({ password: '' });
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //console.log(inputemail.email, inputpass.password);
     try {
-      await axios.post(`https://spectovbackend.onrender.com/api/user/forget-password/${inputpass.password}/${inputemail.email}`);
-      navigate("/login")
-      
+      await axios.post(
+        `https://spectovbackend.onrender.com/api/user/forget-password/${inputpass.password}/${inputemail.email}`
+      );
+      navigate("/login");
     } catch (error) {
       console.log(error);
-      setError("No user exist with this email."); 
+      setError("No user exist with this email.");
     }
   };
 
@@ -31,49 +31,60 @@ const ForgetPassword = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-form-container">
-        <div className="login-form-left">
-          <form onSubmit={handleSubmit} className="login-form">
-            <h1 className="login-title">Reset Password</h1>
-            <input
-              type="email"
-              placeholder="Email"
-              name="email"
-              onChange={handleChangeEmail}
-              value={inputemail.email}
-              required
-              className="login-input"
-              style={{ backgroundColor: "white" }}
-            />
-            <input
-              type="password"
-              placeholder="Enter New Password"
-              name="password"
-              onChange={handleChangePassword}
-              value={inputpass.password}
-              required
-              className="login-input"
-              style={{ backgroundColor: "white" }}
-            />
-            {error && <div className="login-error">{error}</div>}
-            <button type="submit" className="login-button">Update Password</button>
-          </form>
-        </div>
-        <div className="login-form-right">
-          <h1 className="login-new-title">New Here ?</h1>
+    <div className="arvr-login"> {/* Reusing the container class */}
+      {/* LEFT PANEL – Navigation (original links preserved) */}
+      <div className="arvr-login__left">
+        <div className="arvr-left-content">
+          <h1 className="arvr-welcome-heading">Reset Password</h1>
+
+          <h2 className="arvr-secondary-heading">New Here ?</h2>
           <Link to="/signup">
-            <button type="button" className="login-signup-button">Sign Up</button>
+            <button className="arvr-nav-button">Sign Up</button>
           </Link>
-          <h1 className="login-new-title">Login as Admin ?</h1>
+
+          <h2 className="arvr-secondary-heading">Login as Admin ?</h2>
           <Link to="/admin-login">
-            <button type="button" className="login-signup-button">Admin Login</button>
+            <button className="arvr-nav-button">Admin Login</button>
           </Link>
-          <h1 className="login-new-title">Already Registered ?</h1>
+
+          <h2 className="arvr-secondary-heading">Already Registered ?</h2>
           <Link to="/login">
-            <button type="button" className="login-signup-button">Sign in</button>
+            <button className="arvr-nav-button">Sign in</button>
           </Link>
         </div>
+        <div className="arvr-left-overlay"></div>
+      </div>
+
+      {/* RIGHT PANEL – Reset Password Form */}
+      <div className="arvr-login__right">
+        <form onSubmit={handleSubmit} className="arvr-form">
+          <h2 className="arvr-form-title">Reset Password</h2>
+
+          <input
+            type="email"
+            placeholder="Email"
+            name="email"
+            onChange={handleChangeEmail}
+            value={inputemail.email}
+            required
+            className="arvr-input"
+          />
+          <input
+            type="password"
+            placeholder="Enter New Password"
+            name="password"
+            onChange={handleChangePassword}
+            value={inputpass.password}
+            required
+            className="arvr-input"
+          />
+
+          {error && <div className="arvr-error">{error}</div>}
+
+          <button type="submit" className="arvr-button arvr-button--primary">
+            Update Password
+          </button>
+        </form>
       </div>
     </div>
   );
