@@ -4,7 +4,7 @@
 import React, { useState } from "react";
 import { useLocation, useParams, Link } from "react-router-dom";
 import ctestimg from "../assets/logo.svg";
-import qr from "../assets/qr.png";
+import qr from "../assets/newQR.jpeg";
 import axios from 'axios';
 import "../Styles/CareerDetails.css";
 
@@ -18,14 +18,14 @@ import fullstack from "../assets/fullstackbanner.png";
 import special from "../assets/specialbanner.png";
 import join512 from "../assets/join512.png";
 
-import specialqr from "../assets/specialqr.jpg";
-import fullstackqr from "../assets/fullstackqr.jpg";
-import dsaqr from "../assets/dsaqr.jpg";
-import combodsawebqr from "../assets/combodsawebqr.jpg";
-import xraiqr from "../assets/xraiqr.jpg";
-import arqr from "../assets/arqr.jpg";
-import appdevqr from "../assets/appdevqr.jpg";
-import aiqr from "../assets/aiqr.jpg";
+import specialqr from "../assets/newQR.jpeg";
+import fullstackqr from "../assets/newQR.jpeg";
+import dsaqr from "../assets/newQR.jpeg";
+import combodsawebqr from "../assets/newQR.jpeg";
+import xraiqr from "../assets/newQR.jpeg";
+import arqr from "../assets/newQR.jpeg";
+import appdevqr from "../assets/newQR.jpeg";
+import aiqr from "../assets/newQR.jpeg";
 
 
 
