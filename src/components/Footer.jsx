@@ -23,43 +23,37 @@ const Footer = () => {
 
   return (
     <>
-      <section className="access">
-        <div className="footer-container text-black bg-white">
-          <h1 className="h1">Join us on</h1>
-          <p className="type"><span ref={typedEl} /></p>
-          <div className="footer-socialmedia">
-            <div className="footer-socialmedia-link">
-              <a href="https://www.youtube.com/@SpectoV" target="_blank" rel="noopener noreferrer">
-                <img src="https://img.icons8.com/wired/64/000000/youtube.png" alt="YouTube" />
-                <p className="pt-3">YouTube</p>
-              </a>
-            </div>
-            <div className="footer-socialmedia-link">
-              <a href="https://www.instagram.com/spectov_official/" target="_blank" rel="noopener noreferrer">
-                <img src="https://img.icons8.com/dotty/64/000000/instagram.png" alt="Instagram" />
-                <p className="pt-3">Instagram</p>
-              </a>
-            </div>
-            <div className="footer-socialmedia-link">
-              <a href="https://wa.me/917042860263" target="_blank" rel="noopener noreferrer">
-                <img src="https://img.icons8.com/wired/64/000000/whatsapp.png" alt="Whatsapp" />
-                <p className="pt-3">Whatsapp</p>
-              </a>
-            </div>
-            <div className="footer-socialmedia-link">
-              <a href="https://www.linkedin.com/company/specto-v/posts/?feedView=all" target="_blank" rel="noopener noreferrer">
-                <img src="https://img.icons8.com/ios/64/000000/linkedin.png" alt="LinkedIn" />
-                <p className="pt-3">LinkedIn</p>
-              </a>
-            </div>
+      <section className="footer-cosmic">
+        <div className="footer-container">
+          <h1 className="footer-title">Join us on</h1>
+          <div className="footer-typed-wrapper">
+            <span ref={typedEl} className="footer-typed"></span>
+          </div>
+
+          <div className="footer-social">
+            <a href="https://www.youtube.com/@SpectoV" target="_blank" rel="noopener noreferrer" className="social-orb youtube-orb">
+              <img src="https://img.icons8.com/wired/64/000000/youtube.png" alt="YouTube" />
+              <span>YouTube</span>
+            </a>
+            <a href="https://www.instagram.com/spectov_official/" target="_blank" rel="noopener noreferrer" className="social-orb instagram-orb">
+              <img src="https://img.icons8.com/dotty/64/000000/instagram.png" alt="Instagram" />
+              <span>Instagram</span>
+            </a>
+            <a href="https://wa.me/917042860263" target="_blank" rel="noopener noreferrer" className="social-orb whatsapp-orb">
+              <img src="https://img.icons8.com/wired/64/000000/whatsapp.png" alt="Whatsapp" />
+              <span>Whatsapp</span>
+            </a>
+            <a href="https://www.linkedin.com/company/specto-v/posts/?feedView=all" target="_blank" rel="noopener noreferrer" className="social-orb linkedin-orb">
+              <img src="https://img.icons8.com/ios/64/000000/linkedin.png" alt="LinkedIn" />
+              <span>LinkedIn</span>
+            </a>
           </div>
         </div>
       </section>
 
-      <footer className="page-footer font-small indigo text-black bg-white">
-        <div className="footer-copyright text-center py-3">
-          © 2024 Copyright:
-          <a href="https://mdbootstrap.com/education/bootstrap/"> SpectoV, Inc. All Rights Reserved</a>
+      <footer className="footer-cosmic-copyright">
+        <div className="copyright-content">
+          © 2026 Copyright: <a href="https://mdbootstrap.com/education/bootstrap/">SpectoV, Inc. All Rights Reserved</a>
         </div>
       </footer>
     </>
