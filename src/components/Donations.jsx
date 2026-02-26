@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import '../Styles/Donations.css';
+
 Modal.setAppElement('#root');
 
 const Donations = () => {
@@ -26,9 +27,9 @@ const Donations = () => {
       <div className="banner">
         <h1>Why Donate?</h1>
         <ul>
-            <li>Empower communication with real-time translations.</li>
-            <li>Promote inclusivity by making our glasses accessible to more people.</li>
-            <li>Innovate for the benefit of the deaf and hard-of-hearing community.</li>
+          <li>Empower communication with real-time translations.</li>
+          <li>Promote inclusivity by making our glasses accessible to more people.</li>
+          <li>Innovate for the benefit of the deaf and hard-of-hearing community.</li>
         </ul>
       </div>
       <button onClick={openModal} className="donate-button">
