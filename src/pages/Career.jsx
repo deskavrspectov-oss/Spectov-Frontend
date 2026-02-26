@@ -17,8 +17,8 @@ import fullstack from "../assets/fullstackbanner.png";
 import special from "../assets/specialbanner.png";
 import Sankalp from "../components/Sankalp";
 import sankalpimg from "../assets/sankalp.png";
-import DVideo from "../assets/Bridging Silence, Building Connections.mp4"
-import DVideoMobile from "../assets/SpectovM.mp4"; 
+import DVideo from "../assets/Bridging Silence, Building Connections.mp4";
+import DVideoMobile from "../assets/SpectovM.mp4";
 
 let careers = [
   {
@@ -26,7 +26,7 @@ let careers = [
     title: "SpectoV Special",
     price: 6500,
     subtitle:
-      "combo of dsa , web dev ,AI , ,App dev our premium program  ar vr ",
+      "combo of dsa , web dev ,AI , ,App dev our premium program  ar vr",
     content: "Artificial Intelligence and Machine Learning",
     img: special,
   },
@@ -43,7 +43,6 @@ let careers = [
     title: "Augmented Reality",
     price: 3000,
     subtitle: "Learn Blender, Learn how ar vr is made ",
-
     content: "Artificial Intelligence and Machine Learning",
     img: ar,
   },
@@ -92,85 +91,99 @@ let careers = [
 ];
 
 const CareerPage = () => {
-
   const [videoSrc, setVideoSrc] = useState(DVideo);
-  
+
   useEffect(() => {
     const handleResize = () => {
-      if (window.matchMedia('(max-width: 768px)').matches) {
+      if (window.matchMedia("(max-width: 768px)").matches) {
         setVideoSrc(DVideoMobile);
       } else {
         setVideoSrc(DVideo);
       }
     };
 
-    handleResize(); 
-    window.addEventListener('resize', handleResize); 
+    handleResize();
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize); 
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
+  // Filter out the special card (id: 0) from the grid list to avoid duplication
+  const otherCareers = careers.filter((career) => career.id !== 0);
+
   return (
-    <div style={{ backgroundColor: "black" }}>
+    <div className="bg-black min-h-screen">
       <CareerNavbar />
-       <Sankalp/>
-       {/* <div className="container mx-auto p-12" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <img src={sankalp} alt="Sankalp image" className="mt-9 rounded-lg w-full max-w-full object-contain" style={{ borderRadius: '15px' }} />
+      <Sankalp />
+      {/* Commented video section (kept as original) */}
+      {/* <div className="container mx-auto p-12 flex justify-center items-center">
+        <img src={sankalpimg} alt="Sankalp image" className="mt-9 rounded-lg w-full max-w-full object-contain" style={{ borderRadius: '15px' }} />
       </div>
-      <div className="container mx-auto p-12" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <video src={videoSrc} controls autoPlay loop muted className="mt-2 rounded-lg w-full max-w-full object-contain " style={{ borderRadius: '15px' }} />
+      <div className="container mx-auto p-12 flex justify-center items-center">
+        <video src={videoSrc} controls autoPlay loop muted className="mt-2 rounded-lg w-full max-w-full object-contain" style={{ borderRadius: '15px' }} />
       </div> */}
       <Career_hero />
       <Timeline />
 
-
-      <div>
-        <h1 id="careers_section" className="ml-5 mt-32 text-4xl font-bold text-white md:ml-24">
-          Careers At SpectoV 
+      {/* Featured Special Card Section */}
+      <section className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto mt-20">
+        <h1
+          id="careers_section"
+          className="text-4xl md:text-5xl font-bold text-white mb-12 text-center md:text-left"
+        >
+          Careers At SpectoV
         </h1>
-        <div className="w-full flex justify-center">
-			<div className="special h-full w-fit pl-10 pt-4 mt-8">
-			  <div className="m-2 flex h-1/2 w-4/5 flex-col justify-between text-wrap rounded-2xl border-[1px] border-solid border-stone-600 bg-[#192027] p-5 sm:w-[98%]">
-				<div>
-				  <img className="h-fit rounded-md" src={special} alt="" />
-				  <h1 className="text-md ml-2 pt-8 font-bold text-white md:text-3xl">
-					SpectoV Special
-				  </h1>
-				  {/* <h2 className="ml-2 pt-2 text-sm text-white md:text-xl">
-					This brings you the bunder of skill and happiness ; 
-				  </h2> */
-				  /* <p className="ml-2 w-full text-wrap break-words pr-5 pt-2 text-xs text-white md:text-xs">
-					If you are part of spectov special means , You means alot !!! We trained you from industry experience person and fundamental of our company 
-				  </p> */}
-				</div>
-				{/* <div className="flex w-full items-center justify-center">
-				  <a href="https://www.example.com/apply" className="mt-2 flex h-16 w-1/2 items-center justify-center rounded-xl bg-blue-600 text-white">
-					Apply here
-				  </a>
-				</div> */}
-			  </div>
-			</div>
-		</div>
-      </div>
-      <h1 className="ml-5 mt-16 text-4xl font-bold text-white md:ml-24">
-        Our Other courses
-      </h1>
-      <div className="w-100 m-10 mb-0 ml-5 flex flex-wrap pb-10 text-white md:ml-20">
-        {careers.map((career) => (
-          <CareerCard
-            key={career.id}
-            item={career.id}
-            title={career.title}
-            // subtitle={career.subtitle}
-            // content={career.content}
-            img={career.img}
-          />
-        ))}
-      </div>
+
+        <div className="flex justify-center">
+          <div className="w-full max-w-4xl transform transition duration-500 hover:scale-105">
+            <div className="bg-gradient-to-br from-[#192027] to-[#1e2632] rounded-3xl border border-stone-700 p-6 md:p-8 shadow-2xl">
+              <img
+                className="rounded-xl w-full object-cover max-h-[400px]"
+                src={special}
+                alt="SpectoV Special"
+              />
+              <h2 className="text-3xl md:text-4xl font-bold text-white mt-8 mb-4">
+                SpectoV Special
+              </h2>
+              {/* You can uncomment and style price/button if needed */}
+              {/* <p className="text-stone-300 text-lg mb-6">
+                The ultimate bundle of skills and opportunity – learn from industry experts and become part of our core team.
+              </p>
+              <div className="flex justify-center">
+                <a
+                  href="https://www.example.com/apply"
+                  className="px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-xl text-white font-semibold text-lg transition duration-300"
+                >
+                  Apply Now
+                </a>
+              </div> */}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Other Courses Grid */}
+      <section className="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto mt-24 pb-20">
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-12 text-center md:text-left">
+          Our Other Courses
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+          {otherCareers.map((career) => (
+            <CareerCard
+              key={career.id}
+              item={career.id}
+              title={career.title}
+              img={career.img}
+              // You can pass additional props like price if CareerCard supports them
+            />
+          ))}
+        </div>
+      </section>
     </div>
   );
-}
+};
 
-export default CareerPage
+export default CareerPage;

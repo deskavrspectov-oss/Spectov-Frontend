@@ -1,13 +1,13 @@
-// carrers/0 or carrers/1 ----->career detail page 
-
+// careers/0 or careers/1 ----->career detail page 
 
 import React, { useState } from "react";
 import { useLocation, useParams, Link } from "react-router-dom";
+import axios from 'axios';
+// Removed external CSS import - using Tailwind for styling
+
+// Image imports (kept as original)
 import ctestimg from "../assets/logo.svg";
 import qr from "../assets/newQR.jpeg";
-import axios from 'axios';
-import "../Styles/CareerDetails.css";
-
 import ai from "../assets/aibanner.png";
 import appdev from "../assets/app_devBanner.png";
 import ar from "../assets/arbanner.png";
@@ -27,10 +27,6 @@ import arqr from "../assets/newQR.jpeg";
 import appdevqr from "../assets/newQR.jpeg";
 import aiqr from "../assets/newQR.jpeg";
 
-
-
-
-
 let careers = [
   {
     id: 0,
@@ -41,8 +37,6 @@ let careers = [
     img: special,
     link: "https://chat.whatsapp.com/IygldyZVZ4dKDIK150cAoT",
     qr : specialqr,
-    
-
   },
   {
     id: 1,
@@ -53,8 +47,6 @@ let careers = [
     img: ai,
     link: "https://chat.whatsapp.com/JdaZUI35eLz413ACtTrj4Q",
     qr : aiqr,
-    
-
   },
   {
     id: 2,
@@ -65,7 +57,6 @@ let careers = [
     img: ar,
     link: "https://chat.whatsapp.com/B6XVZRVa7bA0pqSvVkGrqT",
     qr : arqr,
-    
   },
   {
     id: 3,
@@ -76,7 +67,6 @@ let careers = [
     img: dsa,
     link: "https://chat.whatsapp.com/EaRCWPW6cJt9LZoxjlGoyb",
     qr : dsaqr,
-    
   },
   {
     id: 4,
@@ -87,7 +77,6 @@ let careers = [
     img: combodsaweb,
     link: "https://chat.whatsapp.com/ID00z5jQt11GspIYoGwVc6",
     qr : combodsawebqr,
-    
   },
   {
     id: 5,
@@ -98,7 +87,6 @@ let careers = [
     img: xrai,
     link: "https://chat.whatsapp.com/KbtCHbXcd6L62dmswCatiQ",
     qr : xraiqr,
-    
   },
   {
     id: 6,
@@ -109,7 +97,6 @@ let careers = [
     img: fullstack,
     link: "https://chat.whatsapp.com/KlYx8Q8yUVhExEs43Pcp79",
     qr : fullstackqr,
-    
   },
   {
     id: 7,
@@ -117,11 +104,9 @@ let careers = [
     price: 2500,
     subtitle: "Learn Flutter, Learn App Dev with Industry Leader",
     content: "https://drive.google.com/file/d/1b1JdfxBpx39dP2-FnByFjeLmdqdykLJP/view?usp=sharing",
-
     img: appdev,
     link: "https://chat.whatsapp.com/LLLkY9Wp1qGIC9xmUbmApy",
     qr : appdevqr,
-    
   },
 ];
 
@@ -135,7 +120,11 @@ export default function CareerDetails() {
   const career = careers.find((c) => c.id === parseInt(item));
 
   if (!career) {
-    return <p>Career not found</p>;
+    return (
+      <div className="bg-black min-h-screen flex items-center justify-center text-white text-xl">
+        Career not found
+      </div>
+    );
   }
 
   const [access, setAccess] = useState(data);
@@ -192,100 +181,140 @@ export default function CareerDetails() {
   };
 
   return (
-    <div className="career-details-container">
-      <Link
-        className=" bg-blue-400 p-4 top-3 rounded-xl m-4 text-white back_btn"
-        to={user ? '/page' : '/careers'}
-      >
-        Go Back
-      </Link>
-      <div className="flex justify-center items-center">
-        <img src={career.img} alt={career.title} className="w-full" />
+    <div className="bg-black min-h-screen pt-24 pb-16">
+      {/* Go Back Button */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+        <Link
+          to={user ? '/page' : '/careers'}
+          className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl text-white font-semibold transition duration-300 shadow-lg"
+        >
+          ← Go Back
+        </Link>
       </div>
 
-      <div className="career-details-content-container">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="career-details-qr mt-4 md:mt-12 md:w-25rem flex flex-col items-center justify-center h-auto w-full md:w-96 shadow-md p-4">
-            <div className="qr-heading">QR Code</div>
-            <img src={qr} className="qr_code" />
-            <h1>Rs.{career.price}</h1>
-            <div className="qr-heading">Scan to Pay</div>
+      {/* Career Image */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <img 
+          src={career.img} 
+          alt={career.title} 
+          className="w-full rounded-2xl shadow-2xl border border-stone-700"
+        />
+      </div>
+
+      {/* Main Content Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* QR Code Card */}
+          <div className="lg:col-span-1">
+            <div className="bg-gradient-to-br from-[#1e2632] to-[#192027] rounded-2xl border border-stone-700 p-6 shadow-xl sticky top-24">
+              <h3 className="text-xl font-bold text-white mb-4 text-center">QR Code</h3>
+              <div className="flex flex-col items-center">
+                <img 
+                  src={qr} 
+                  alt="Payment QR" 
+                  className="w-48 h-48 object-contain mb-4 rounded-lg border-2 border-stone-600"
+                />
+                <p className="text-3xl font-bold text-white mb-2">₹{career.price}</p>
+                <p className="text-[#a0a8b7] text-sm">Scan to Pay</p>
+                <p className="text-[#a0a8b7] text-xs mt-2">UPI / Cards / NetBanking</p>
+              </div>
+            </div>
           </div>
 
-          <div className="career-details-content text-left">
-            <h1>{career.title}</h1>
-            <h2>{career.subtitle}</h2>
-            {/* <p>{career.content}</p> */}
-            <div className="flex justify-between mt-4">
-            <a
-                href={career.content}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700"
-              >
-                View Course
-              </a>
-              {access === 'true' ? (
-                <Link
-                  className="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-700"
-                 /* to="/access" 
-                  state={career.title} */ 
-                  to="/course" 
-                  state={career} 
+          {/* Course Details Card */}
+          <div className="lg:col-span-2">
+            <div className="bg-gradient-to-br from-[#1e2632] to-[#192027] rounded-2xl border border-stone-700 p-6 md:p-8 shadow-xl">
+              <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
+                {career.title}
+              </h1>
+              <h2 className="text-xl text-[#a0a8b7] mb-6 leading-relaxed">
+                {career.subtitle}
+              </h2>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-4 mb-6">
+                <a
+                  href={career.content}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 bg-red-600 hover:bg-red-700 rounded-xl text-white font-semibold transition duration-300 shadow-lg"
                 >
-                  Open
-                </Link>
-              ) : access === 'false' ? (
-                <>
-                  <button
-                    className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700"
-                    onClick={handleSubmit1}
+                  View Course
+                </a>
+
+                {access === 'true' ? (
+                  <Link
+                    to="/course"
+                    state={career}
+                    className="px-6 py-3 bg-green-600 hover:bg-green-700 rounded-xl text-white font-semibold transition duration-300 shadow-lg"
                   >
-                    Enroll
-                  </button>
-                  <input
-                    type="text"
-                    id="tid"
-                    className="input-field"
-                    placeholder="Enter Transaction Id"
-                    name="transactionId"
-                    value={inputs.transactionId}
-                    onChange={handleChange1}
-                    style={{ display: "none", backgroundColor: "white" }}
-                  />
-                  <input
-                    type="text"
-                    id="rid"
-                    className="input-field"
-                    placeholder="Have a referral?"
-                    name="referId"
-                    value={refer.referId}
-                    onChange={handleChange2}
-                    style={{ display: "none", backgroundColor: "white" }}
-                  />
+                    Open Course
+                  </Link>
+                ) : access === 'false' ? (
+                  <>
+                    <button
+                      className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl text-white font-semibold transition duration-300 shadow-lg"
+                      onClick={handleSubmit1}
+                    >
+                      Enroll Now
+                    </button>
+
+                    {/* Hidden inputs (revealed by Enroll click) */}
+                    <input
+                      type="text"
+                      id="tid"
+                      className="w-full md:w-auto flex-1 bg-[#0f1217] border border-stone-600 rounded-xl px-4 py-3 text-white placeholder-[#6b7280] focus:outline-none focus:border-blue-500 transition"
+                      placeholder="Enter Transaction Id"
+                      name="transactionId"
+                      value={inputs.transactionId}
+                      onChange={handleChange1}
+                      style={{ display: "none" }}
+                    />
+                    <input
+                      type="text"
+                      id="rid"
+                      className="w-full md:w-auto flex-1 bg-[#0f1217] border border-stone-600 rounded-xl px-4 py-3 text-white placeholder-[#6b7280] focus:outline-none focus:border-blue-500 transition"
+                      placeholder="Have a referral? (optional)"
+                      name="referId"
+                      value={refer.referId}
+                      onChange={handleChange2}
+                      style={{ display: "none" }}
+                    />
+                    <button
+                      id="tbtn"
+                      className="px-6 py-3 bg-yellow-600 hover:bg-yellow-700 rounded-xl text-white font-semibold transition duration-300 shadow-lg"
+                      onClick={handleSubmit}
+                      style={{ display: "none" }}
+                    >
+                      Submit Payment
+                    </button>
+
+                    {error && (
+                      <div className="w-full p-4 bg-red-900/30 border border-red-500 rounded-xl text-red-400">
+                        ⚠️ {error}
+                      </div>
+                    )}
+                  </>
+                ) : (
                   <button
-                    id="tbtn"
-                    className="bg-yellow-500 text-white font-bold py-2 px-4 rounded hover:bg-yellow-700"
-                    onClick={handleSubmit}
-                    style={{ display: "none" }}
+                    className="px-6 py-3 bg-gray-600 cursor-not-allowed rounded-xl text-white font-semibold opacity-75"
+                    onClick={() => alert("Approval pending by owner.")}
                   >
-                    Submit
+                    Pending Approval
                   </button>
-                  {error && <div className="login-error">{error}</div>}
-                </>
-              ) : (
-                <Link
-                  className="bg-gray-500 text-white font-bold py-2 px-4 rounded hover:bg-gray-700"
-                  onClick={() => alert("Approval pending by owner.")}
-                >
-                  Pending
-                </Link>
-              )}
+                )}
+              </div>
+
+              <p className="text-[#a0a8b7] text-sm border-t border-stone-700 pt-4 mt-4">
+                Any doubt or issue? Contact us at{' '}
+                <a href="mailto:spectov.pvt.ltd@gmail.com" className="text-blue-400 hover:underline">
+                  spectov.pvt.ltd@gmail.com
+                </a>
+              </p>
             </div>
           </div>
         </div>
       </div>
-      <h1>Any Doubt or issue contact at spectov.pvt.ltd@gmail.com</h1>
     </div>
   );
 }
