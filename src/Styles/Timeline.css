@@ -1,32 +1,117 @@
 /* Timeline.css */
 
+/* CSS Variables for consistent theming */
+:root {
+  --timeline-element-bg: #e91e63;      /* Pink background for cards */
+  --timeline-arrow-color: #2196f3;     /* Blue arrow */
+  --timeline-icon-bg: #2196f3;          /* Blue icon background */
+  --timeline-text-light: #fff;
+  --timeline-bg-dark: #0a0a0a;          /* Dark background for wrapper */
+}
+
+/* Wrapper to contain the timeline and title */
+.timeline-wrapper {
+  background-color: var(--timeline-bg-dark);
+  padding: 2rem 0;
+  color: var(--timeline-text-light);
+}
+
+/* Title styling */
+.timeline-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Main container (the one that gets translated by GSAP) */
 .timeline-container {
-    width: 100%;
-    margin: 0 auto;
-    background-color: black;
-    margin-top: 100px;
-    position: relative;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  will-change: transform; /* Optimize for animation */
+}
+
+/* Base timeline styles (override react-vertical-timeline-component defaults if needed) */
+.vertical-timeline {
+  transition: transform 0.3s ease-out; /* Smooth GSAP updates */
+}
+
+/* Individual timeline element card */
+.vertical-timeline-element--work {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+/* Card content */
+.vertical-timeline-element-content {
+  background: var(--timeline-element-bg) !important; /* Use variable */
+  color: var(--timeline-text-light) !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Arrow pointing from card to icon */
+.vertical-timeline-element-content-arrow {
+  border-right: 7px solid var(--timeline-arrow-color) !important;
+}
+
+/* Icon styling */
+.vertical-timeline-element-icon {
+  background: var(--timeline-icon-bg) !important;
+  color: var(--timeline-text-light) !important;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.2);
+}
+
+/* Header text inside cards */
+.headertimeline {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--timeline-text-light);
+}
+
+/* Paragraph text inside cards */
+.texttimeline {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Optional pinned state styling (if you want to add a shadow or border when pinned) */
+.timeline-container.timeline-pinned {
+  /* Example: add a subtle shadow */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .timeline-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
   }
-  
-  .timeline-container .vertical-timeline {
-    transition: transform 0.5s ease-out;
+
+  .vertical-timeline-element--work {
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
-  
-  .timeline-container.pinned .vertical-timeline {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-height: calc(100vh - 40px);
-    overflow-y: auto;
-    z-index: 1000;
-    background: #fff; /* Set a background color to differentiate from the rest of the page */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a box shadow for visual effect */
+
+  .headertimeline {
+    font-size: 1.5rem;
   }
-  
-  .vertical-timeline-element--work
-  {
-    margin-top: 50px;
-    margin-bottom: 50px;
+
+  .texttimeline {
+    font-size: 0.95rem;
   }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+  .headertimeline {
+    font-size: 1.3rem;
+  }
+}

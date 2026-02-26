@@ -1,217 +1,254 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { styles } from "../styles";
 import { navLinks } from "../constants";
 import { logo, menu, close } from "../assets";
 
 const Navbar = () => {
-  const [active, setActive] = useState("");
-  const [toggle, setToggle] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+  const location = useLocation();
+
   const user = localStorage.getItem("token");
+  const isAuthenticated = !!user;
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location]);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      if (scrollTop > 100) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
-
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (location.pathname !== "/") return;
+
+    const handleScrollSpy = () => {
+      const sections = navLinks.map((link) => document.getElementById(link.id));
+      const scrollPosition = window.scrollY + 100;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section && section.offsetTop <= scrollPosition) {
+          setActiveSection(navLinks[i].title);
+          return;
+        }
+      }
+      setActiveSection("");
+    };
+
+    handleScrollSpy();
+    window.addEventListener("scroll", handleScrollSpy);
+    return () => window.removeEventListener("scroll", handleScrollSpy);
+  }, [location.pathname]);
+
+  const handleLinkClick = (title) => {
+    setActiveSection(title);
+    setMobileMenuOpen(false);
+  };
+
   return (
     <nav
-      className={`${
-        styles.paddingX
-      } fixed top-0 z-20 flex w-full items-center py-5 ${
-        scrolled ? "bg-white shadow-md" : "bg-transparent"
+      className={`${styles.paddingX} fixed top-0 z-50 w-full py-5 transition-all duration-300 ${
+        scrolled ? "bg-white/90 shadow-lg backdrop-blur-sm" : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
+      <div className="mx-auto flex max-w-7xl items-center justify-between">
+        {/* Logo */}
         <Link
           to="/"
           className="flex items-center gap-2"
           onClick={() => {
-            setActive("");
+            setActiveSection("");
             window.scrollTo(0, 0);
           }}
         >
-          <img src={logo} alt="logo" className="h-9 w-9 object-contain" />
-          <p className="flex cursor-pointer text-[18px] font-bold text-black">
-            SpectoV &nbsp;
-            {/* <span className="hidden sm:block"> | </span> */}
-          </p>
+          <img src={logo} alt="SpectoV" className="h-9 w-9 object-contain" />
+          <span className="text-2xl font-bold text-gray-900">SpectoV</span>
         </Link>
 
-        <ul className="hidden list-none flex-row gap-10 sm:flex">
-          <li
-            className={`${
-              active === "Careers" ? "text-red-500" : "text-black"
-            } cursor-pointer text-[18px] font-medium hover:text-red-500`}
-            onClick={() => setActive("Careers")}
-          >
-            <Link
-              to={user ? "/page" : "/careers"}
-              className={`block px-3 py-1 text-inherit ${
-                active === "Careers" && "bg-gray-200 rounded"
+        {/* Desktop Navigation */}
+        <div className="hidden items-center gap-8 sm:flex">
+          <NavLinks
+            activeSection={activeSection}
+            onLinkClick={handleLinkClick}
+            isAuthenticated={isAuthenticated}
+          />
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="sm:hidden"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+          aria-expanded={mobileMenuOpen}
+        >
+          <img
+            src={mobileMenuOpen ? close : menu}
+            alt=""
+            className="h-6 w-6"
+          />
+        </button>
+
+        {/* Mobile Menu */}
+        <MobileMenu
+          isOpen={mobileMenuOpen}
+          activeSection={activeSection}
+          onLinkClick={handleLinkClick}
+          isAuthenticated={isAuthenticated}
+        />
+      </div>
+    </nav>
+  );
+};
+
+// Desktop navigation links with increased font size
+const NavLinks = ({ activeSection, onLinkClick, isAuthenticated }) => {
+  const location = useLocation();
+
+  return (
+    <ul className="flex gap-8">
+      {location.pathname === "/" &&
+        navLinks.map((link) => (
+          <li key={link.id}>
+            <a
+              href={`#${link.id}`}
+              onClick={() => onLinkClick(link.title)}
+              className={`text-base font-medium transition-colors hover:text-red-500 ${
+                activeSection === link.title ? "text-red-500" : "text-gray-700"
               }`}
             >
-              Careers
-            </Link>
+              {link.title}
+            </a>
           </li>
-          <li
-            className={`${
-              active === "Product" ? "text-red-500" : "text-black"
-            } cursor-pointer text-[18px] font-medium hover:text-red-500`}
-            onClick={() => setActive("Product")}
+        ))}
+
+      <li>
+        <Link
+          to="/products"
+          onClick={() => onLinkClick("Product")}
+          className={`text-base font-medium transition-colors hover:text-red-500 ${
+            activeSection === "Product" ? "text-red-500" : "text-gray-700"
+          }`}
+        >
+          Product
+        </Link>
+      </li>
+
+      <li>
+        <Link
+          to={isAuthenticated ? "/dashboard" : "/careers"}
+          onClick={() => onLinkClick("Careers")}
+          className={`text-base font-medium transition-colors hover:text-red-500 ${
+            activeSection === "Careers" ? "text-red-500" : "text-gray-700"
+          }`}
+        >
+          Careers
+        </Link>
+      </li>
+
+      {!isAuthenticated ? (
+        <li>
+          <Link
+            to="/login"
+            onClick={() => onLinkClick("Login")}
+            className="text-base font-medium text-gray-700 transition-colors hover:text-red-500"
           >
-            <Link
-              to="/products"
-              className={`block px-3 py-1 text-inherit ${
-                active === "Product" && "bg-gray-200 rounded"
-              }`}
-            >
-              Product
-            </Link>
-          </li>
-          <li
-            className={`${
-              active === "Login" ? "text-red-500" : "text-black"
-            } cursor-pointer text-[18px] font-medium hover:text-red-500`}
-            onClick={() => setActive("Login")}
-            style={{ display: "none" }}
+            Login
+          </Link>
+        </li>
+      ) : (
+        <li>
+          <Link
+            to="/profile"
+            onClick={() => onLinkClick("Profile")}
+            className="flex items-center gap-2 text-base font-medium text-gray-700 transition-colors hover:text-red-500"
           >
+            <span>Profile</span>
+          </Link>
+        </li>
+      )}
+    </ul>
+  );
+};
+
+// Mobile menu with increased font size
+const MobileMenu = ({ isOpen, activeSection, onLinkClick, isAuthenticated }) => {
+  const location = useLocation();
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="absolute right-4 top-20 z-50 w-64 rounded-xl bg-white p-6 shadow-xl sm:hidden">
+      <ul className="flex flex-col gap-4">
+        {location.pathname === "/" &&
+          navLinks.map((link) => (
+            <li key={link.id}>
+              <a
+                href={`#${link.id}`}
+                onClick={() => onLinkClick(link.title)}
+                className={`block w-full text-base font-medium transition-colors hover:text-red-500 ${
+                  activeSection === link.title ? "text-red-500" : "text-gray-700"
+                }`}
+              >
+                {link.title}
+              </a>
+            </li>
+          ))}
+
+        <li>
+          <Link
+            to="/products"
+            onClick={() => onLinkClick("Product")}
+            className={`block w-full text-base font-medium transition-colors hover:text-red-500 ${
+              activeSection === "Product" ? "text-red-500" : "text-gray-700"
+            }`}
+          >
+            Product
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            to={isAuthenticated ? "/dashboard" : "/careers"}
+            onClick={() => onLinkClick("Careers")}
+            className={`block w-full text-base font-medium transition-colors hover:text-red-500 ${
+              activeSection === "Careers" ? "text-red-500" : "text-gray-700"
+            }`}
+          >
+            Careers
+          </Link>
+        </li>
+
+        {!isAuthenticated ? (
+          <li>
             <Link
               to="/login"
-              className={`block px-3 py-1 text-inherit ${
-                active === "Login" && "bg-gray-200 rounded"
-              }`}
+              onClick={() => onLinkClick("Login")}
+              className="block w-full text-base font-medium text-gray-700 transition-colors hover:text-red-500"
             >
               Login
             </Link>
           </li>
-          {navLinks.map((nav) => (
-            <li
-              key={nav.id}
-              className={`${
-                active === nav.title ? "text-red-500" : "text-black"
-              } cursor-pointer text-[18px] font-medium hover:text-red-500`}
-              onClick={() => setActive(nav.title)}
+        ) : (
+          <li>
+            <Link
+              to="/profile"
+              onClick={() => onLinkClick("Profile")}
+              className="block w-full text-base font-medium text-gray-700 transition-colors hover:text-red-500"
             >
-              <a
-                href={`#${nav.id}`}
-                className={`block px-3 py-1 ${
-                  active === nav.title && "bg-gray-200 rounded"
-                }`}
-              >
-                {nav.title}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex flex-1 items-center justify-end sm:hidden">
-          <img
-            src={toggle ? close : menu}
-            alt="menu"
-            className="h-7 w-7 cursor-pointer object-contain"
-            onClick={() => setToggle(!toggle)}
-          />
-
-          <div
-            className={`${
-              !toggle ? "hidden" : "flex"
-            } absolute right-0 top-20 z-10 mx-4 my-2 min-w-[140px] rounded-xl bg-white p-6 shadow-lg`}
-          >
-            <ul className="flex flex-1 list-none flex-col items-start justify-end gap-4">
-              <li
-                className={`font-poppins cursor-pointer text-[16px] font-medium ${
-                  active === "Careers" ? "text-red-500" : "text-black"
-                }`}
-                onClick={() => {
-                  setToggle(!toggle);
-                  setActive("Careers");
-                }}
-              >
-                <Link
-                  to={user ? "/page" : "/careers"}
-                  className={`block px-3 py-1 ${
-                    active === "Careers" && "bg-gray-200 rounded"
-                  }`}
-                >
-                  Careers
-                </Link>
-              </li>
-              <li
-                className={`font-poppins cursor-pointer text-[16px] font-medium ${
-                  active === "Product" ? "text-red-500" : "text-black"
-                }`}
-                onClick={() => {
-                  setToggle(!toggle);
-                  setActive("Product");
-                }}
-              >
-                <Link
-                  to="/products"
-                  className={`block px-3 py-1 ${
-                    active === "Product" && "bg-gray-200 rounded"
-                  }`}
-                >
-                  Product
-                </Link>
-              </li>
-              <li
-                className={`font-poppins cursor-pointer text-[16px] font-medium ${
-                  active === "Login" ? "text-red-500" : "text-black"
-                }`}
-                onClick={() => {
-                  setToggle(!toggle);
-                  setActive("Login");
-                }}
-                style={{ display: "none" }}
-              >
-                <Link
-                  to="/login"
-                  className={`block px-3 py-1 ${
-                    active === "Login" && "bg-gray-200 rounded"
-                  }`}
-                >
-                  Login
-                </Link>
-              </li>
-              {navLinks.map((nav) => (
-                <li
-                  key={nav.id}
-                  className={`font-poppins cursor-pointer text-[16px] font-medium ${
-                    active === nav.title ? "text-red-500" : "text-black"
-                  }`}
-                  onClick={() => {
-                    setToggle(!toggle);
-                    setActive(nav.title);
-                  }}
-                >
-                  <a
-                    href={`#${nav.id}`}
-                    className={`block px-3 py-1 ${
-                      active === nav.title && "bg-gray-200 rounded"
-                    }`}
-                  >
-                    {nav.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </nav>
+              Profile
+            </Link>
+          </li>
+        )}
+      </ul>
+    </div>
   );
 };
 

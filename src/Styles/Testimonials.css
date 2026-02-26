@@ -1,23 +1,37 @@
+/* ===== CSS Variables for easy maintenance ===== */
+:root {
+  --primary-color: black;
+  --border-color: rgb(168, 168, 168);
+  --card-bg: white;
+  --shadow-light: 0 0 10px rgba(0, 0, 0, 0.1);
+  --star-color: gold;
+  --transition-speed: 0.3s;
+}
+
+/* ===== Container ===== */
 .testimonial_container {
   text-align: center;
-  background-color: white;
-  padding-top: 100px;
+  background-color: var(--card-bg);
+  padding: 100px 20px 40px; /* Added horizontal padding for small screens */
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .testimonial_title {
   font-size: 4rem;
   font-weight: 500;
   margin-bottom: 50px;
-  color: black;
-  border-bottom: solid rgb(168, 168, 168) 2px;
-  border-top: solid rgb(168, 168, 168) 2px;
+  color: var(--primary-color);
+  border-bottom: solid var(--border-color) 2px;
+  border-top: solid var(--border-color) 2px;
   width: fit-content;
+  padding: 0 20px; /* Added padding to avoid text touching borders */
 }
 
+/* ===== Review Layout ===== */
 .review_container {
   width: 100%;
   display: flex;
@@ -25,127 +39,179 @@
   gap: 20px;
 }
 
+/* ===== Marquee Wrappers ===== */
 .testimonial_customers,
 .testimonial_reviews {
   overflow: hidden;
   position: relative;
   white-space: nowrap;
+  width: 100%;
 }
 
+/* Respect user motion preferences */
+@media (prefers-reduced-motion) {
+  .marquee,
+  .marquee.reverse {
+    animation: none !important;
+    white-space: normal !important;
+    flex-wrap: wrap !important;
+    justify-content: center;
+  }
+}
+
+/* ===== Marquee Animation ===== */
 .marquee {
   display: flex;
   animation: marquee 20s linear infinite;
+  width: max-content; /* Ensures content determines width */
 }
 
 .marquee.reverse {
   animation: marquee 20s linear infinite reverse;
 }
 
+/* Pause on hover for better UX */
+.marquee:hover,
+.marquee.reverse:hover {
+  animation-play-state: paused;
+}
+
 .marquee_content {
   display: flex;
 }
 
+/* ===== Customer Logo Cards ===== */
 .testimonial_card {
   display: flex;
-  width: 25vw;
-  height: 45vh;
+  width: 200px; /* Fixed width for consistency */
+  height: 200px; /* Square cards */
   margin: 25px 20px;
-  border-radius: 50%;
-  justify-content: center;
+  border-radius: 16px; /* Rounded corners, not circles */
+  background-color: #f9f9f9; /* Light background for contrast */
+  box-shadow: var(--shadow-light);
+  transition: transform var(--transition-speed) ease;
+}
+
+.testimonial_card:hover {
+  transform: scale(1.05);
 }
 
 .testimonial_card img {
-  width: 20vw;
-  object-fit: contain;
-  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensures full logo visibility */
+  border-radius: 16px; /* Match card corners */
+  padding: 10px; /* Add some space around logos */
+  box-sizing: border-box;
 }
 
+/* ===== Review Cards ===== */
 .review_card {
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
   border: 1px solid #ccc;
   border-radius: 10px;
-  padding: 25px;
+  padding: 20px;
   margin: 10px;
-  /* min-width: 300px;
-  max-width: fit-content; */
   width: 300px;
-  height: 300px;
-  /* overflow: hidden; */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  min-height: 250px; /* Allow height to grow */
+  height: auto; /* Remove fixed height */
+  box-shadow: var(--shadow-light);
   word-wrap: break-word;
   overflow-wrap: break-word;
+  background-color: var(--card-bg);
+  transition: box-shadow var(--transition-speed) ease;
+}
+
+.review_card:hover {
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
 }
 
 .review_avatar {
-  width: 100px;
-  height: 100px;
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
   background-color: #ddd;
   background-image: url("../assets/user.png");
   background-position: center;
-  background-size: contain;
+  background-size: cover; /* Cover ensures full circle */
   border-radius: 50%;
-  /* margin-right: 10px; */
+  margin-right: 15px;
 }
 
 .review_content {
   display: flex;
-  /* width: 250px; */
-  width: auto;
   flex-direction: column;
-  flex-wrap:wrap;
-  padding: 10px;
+  flex: 1; /* Take remaining space */
+  min-width: 0; /* Allow text truncation */
 }
 
 .review_name {
   font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 4px;
 }
 
 .review_rating {
-  font-size: larger;
-  color: gold;
+  font-size: 1.2rem;
+  color: var(--star-color);
+  margin-bottom: 8px;
 }
 
 .review_text {
-  margin-top: 5px;
+  white-space: normal; /* Override nowrap from parent */
   word-wrap: break-word;
   overflow-wrap: break-word;
-  width: 100%;
-  max-width: 100%;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  text-wrap:wrap;
+  line-height: 1.4;
+  max-height: 4.2em; /* About 3 lines */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
+/* ===== Marquee Animation Keyframes ===== */
 @keyframes marquee {
   0% {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%); /* Move only half because we duplicate content twice */
   }
 }
 
+/* ===== Responsive Design ===== */
 @media only screen and (max-width: 700px) {
-  .marquee {
-    display: flex;
-    margin: auto -10px;
-  }
   .testimonial_title {
     font-size: 3rem;
     margin: 5px;
   }
-  .testimonial_card img {
-    width: 35vw;
-    height: 20vh;
-  }
+
   .testimonial_card {
-    width: 25vh;
-    margin: 30px 10px -100px 10px;
+    width: 150px;
+    height: 150px;
+    margin: 15px 10px;
+  }
+
+  .review_card {
+    width: 260px; /* Slightly smaller on mobile */
+    padding: 15px;
+  }
+
+  .review_avatar {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+  }
+
+  /* On small screens, allow wrapping if reduced motion is preferred */
+  @media (prefers-reduced-motion) {
+    .marquee_content {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
 }
