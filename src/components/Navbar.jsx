@@ -143,7 +143,7 @@ const NavLinks = ({ activeSection, onLinkClick, isAuthenticated }) => {
 
       <li>
         <Link
-          to={isAuthenticated ? "/dashboard" : "/careers"}
+          to="/careers"
           onClick={() => onLinkClick("Careers")}
           className={`text-base font-medium transition-colors hover:text-red-500 ${
             activeSection === "Careers" ? "text-red-500" : "text-gray-700"
@@ -216,7 +216,7 @@ const MobileMenu = ({ isOpen, activeSection, onLinkClick, isAuthenticated }) => 
 
         <li>
           <Link
-            to={isAuthenticated ? "/dashboard" : "/careers"}
+            to="/careers"
             onClick={() => onLinkClick("Careers")}
             className={`block w-full text-base font-medium transition-colors hover:text-red-500 ${
               activeSection === "Careers" ? "text-red-500" : "text-gray-700"
